@@ -34,6 +34,42 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+		
+		write("Hello 1!");
+		write("Hello 2!");
+
+		var push = PushNotification.init({
+			android: {
+				senderID: "446655416854"
+			},
+			ios: {
+				alert: "true",
+				badge: true,
+				sound: 'false'
+			},
+			windows: {}
+		});
+		
+		write("Hello 3!");
+		
+		push.on('registration', function(data) {
+			console.log("Registration ID = " + data.registrationId);
+			write("Registration ID = " + data.registrationId);
+		});
+		
+		push.on('notification', function(data) {
+			console.log("Message = " + data.message);
+			console.log("Title = " + data.title);
+			write("Message = " + data.message);
+			write("Title = " + data.title);
+		});
+		
+		function write(text) {
+			var el = document.createTextNode(text);
+			document.getElementById("pnl").appendChild(el);
+			el = document.createElement("br");
+			document.getElementById("pnl").appendChild(el);
+		}
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
